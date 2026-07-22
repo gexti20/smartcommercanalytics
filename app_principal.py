@@ -8,3 +8,14 @@ from componetes_prediccion import MotorPrediccion
 #Configuramos el nombre de la pagina de nuestra app web
 st.set_page_config(page_title="Consola de Componentes Comerciales", layout="wide")
 st.title("📦 Ensamblador de componentes: Inteligencia de Negocio")
+
+#instanciamos los componentes de forma local
+ingestor = IngestorDatos()
+predictor = MotorPrediccion(incremento_simulado=0.20)
+
+#vamos a inicializar el estado de la sesion (session state)
+if 'datos_negocio' not in st.session_state:
+    st.session_state.datos_negocio = pd.DataFrame()
+
+#RENDERIZADO VISUAL
+archivo_cargado = st.file_uploader("cargar archivo de ventas (CSV)", type="csv")
