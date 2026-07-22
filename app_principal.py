@@ -19,3 +19,25 @@ if 'datos_negocio' not in st.session_state:
 
 #RENDERIZADO VISUAL
 archivo_cargado = st.file_uploader("cargar archivo de ventas (CSV)", type="csv")
+
+if archivo_cargado:
+    try:
+        #usamos el componente de datos para cargar el archivo en el estado de la memoria
+        st.session_state.datos_negocio = ingestor.cargar_datos(archivo_cargado)
+        st.success("Componente de Datos: Ingesta y Validacción exitosas.  NIGGA")
+    except Exception as e:
+        st.error(f"Fallo en la interfaz de datos: {e}")
+
+#si hay datos en la sesion, los componentes visuales se va a mostrar e intectativos se activan
+if not st.session_state.datos_negocio.empty:
+    col_tabla, col_prediccion = st.columns(2)
+
+    with col_tabla:
+        st.subheader("📋Registro de datos")
+        st.dataframe(st.session_state.datos_negocio, width="stretch")
+
+    with col_prediccion:
+        st.subheader("🔮Prediccion de stock requerido")
+        #Pasamos los datos limpios de un componente a otro de forma directa
+        df_predicciones = predictor.predecir_demanda(st.session_state.datos_negocio)
+        st.dataframe(df_predicciones, width="stretch")
