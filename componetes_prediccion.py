@@ -23,3 +23,4 @@ class   MotorPrediccion:
         #Aplicamos la formula matematica de stock sugerida(demanda + margen de seguridad)
         ventas_promedio['stock_sugerido'] = np.ceil(ventas_promedio['cantidad'] * (1 + self.incremento)).astype(int)
         ventas_promedio.rename(columns={'cantidad': 'promedio historico'}, inplace=True)
+        return round(ventas_promedio, 2)
